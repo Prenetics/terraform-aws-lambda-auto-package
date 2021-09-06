@@ -52,7 +52,6 @@ resource "aws_iam_policy" "additional" {
 resource "aws_iam_role_policy_attachment" "additional" {
   count = local.attach_policy ? 1 : 0
 
-  name       = var.function_name
   role      = aws_iam_role.this.name
   policy_arn = aws_iam_policy.additional[0].arn
 }
