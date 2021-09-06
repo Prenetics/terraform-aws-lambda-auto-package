@@ -74,7 +74,7 @@ resource "aws_cloudwatch_log_group" "this" {
 resource "aws_lambda_function" "this" {
   filename         = data.archive_file.source.output_path
   role             = aws_iam_role.this.arn
-  source_code_hash = "${base64sha256(file(var.output_path))}"
+  source_code_hash = filebase64sha256(var.output_path)
 
   runtime                        = var.runtime
   handler                        = var.handler
