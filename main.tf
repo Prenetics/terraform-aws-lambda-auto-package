@@ -36,6 +36,27 @@ resource "aws_iam_role_policy_attachment" "lambda" {
   policy_arn = var.policy_arns[count.index]
 }
 
+
+# Attach an additional policy if provided.
+locals {
+  attach_policy = var.policy != null
+}
+
+resource "aws_iam_policy" "additional" {
+  count = local.attach_policy ? 1 : 0
+
+  name   = var.function_name
+  policy = var.policy.json
+}
+
+resource "aws_iam_policy_attachment" "additional" {
+  count = local.attach_policy ? 1 : 0
+
+  name       = var.function_name
+  roles      = aws_iam_role.this.name
+  policy_arn = aws_iam_policy.additional[0].arn
+}
+
 #---------------------------------------------------------------------------------------------------
 # CloudWatch Log group
 #---------------------------------------------------------------------------------------------------
