@@ -165,3 +165,11 @@ variable "allowed_services" {
   type        = list(string)
   default     = ["lambda.amazonaws.com"]
 }
+
+variable "policy" {
+  description = "An additional policy to attach to the Lambda function role"
+  type = object({
+    json = string
+  })
+  default = null
+}
